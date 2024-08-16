@@ -1,2 +1,2 @@
-# Taller-de-Lenguajes-II
-Some exercise solutions from the subject "Lenguages Workshop II" (UNLP)
+# Taller-de-Lenguajes-II 
+Resolución de algunos ejercicios de las prácticas de la materia.
