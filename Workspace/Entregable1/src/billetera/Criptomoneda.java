@@ -1,10 +1,10 @@
 package billetera;
 /**
  * 
- * @nombre nombre es el nombre de la criptomoneda (ej:Bitcoin,Etherium,etc)
- * @etiqueta etiqueta son las siglas que identifican a la criptomoneda (ej:BTC,ETH,etc)
- * @volatilidad volatilidad es el porcentaje de fluctación del precio de la criptomoneda
- * @stock stock es la cantidad de la criptomoneda que se encuentra disponible en el mercado
+ * @nombre es el nombre de la criptomoneda (ej:Bitcoin,Etherium,etc)
+ * @etiqueta son las siglas que identifican a la criptomoneda (ej:BTC,ETH,etc)
+ * @volatilidad es el porcentaje de fluctación del precio de la criptomoneda
+ * @stock es la cantidad de la criptomoneda que se encuentra disponible en el mercado
  * 
  */
 public class Criptomoneda {
