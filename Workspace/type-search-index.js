@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"billetera","l":"Blockchain"},{"p":"billetera","l":"Criptomoneda"},{"p":"billetera","l":"DeFi"},{"p":"billetera","l":"Tarjeta"}];updateSearchResults();
