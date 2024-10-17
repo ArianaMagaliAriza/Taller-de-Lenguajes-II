@@ -11,7 +11,6 @@ public class Transaccion {
      */
 	
 	public Transaccion(Double monto, Cripto moneda) {
-			super();
 			this.monto = monto;
 			this.moneda = moneda;
 		}
