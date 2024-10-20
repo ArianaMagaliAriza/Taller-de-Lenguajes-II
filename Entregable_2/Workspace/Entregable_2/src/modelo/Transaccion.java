@@ -1,6 +1,6 @@
 package modelo;
 
-public class Transaccion {
+public abstract class Transaccion {
 	private Double monto;
 	private Cripto moneda;
 	
@@ -8,8 +8,6 @@ public class Transaccion {
 		this.monto = monto;
 		this.moneda = moneda;
 	}
-
-
 
 	public Double getMonto() {
 		return monto;

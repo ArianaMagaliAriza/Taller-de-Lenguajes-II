@@ -1,6 +1,6 @@
 package modelo;
 
-public class USDT {
+public class USDT extends Cripto{
 
 	public USDT() {
 		// TODO Auto-generated constructor stub

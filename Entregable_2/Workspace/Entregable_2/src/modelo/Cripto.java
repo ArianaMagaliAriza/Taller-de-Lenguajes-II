@@ -1,17 +1,16 @@
 package modelo;
 
-public abstract class Cripto {//extiende de la clase Moneda
+public abstract class Cripto extends Moneda{
 	private String etiqueta;
 	private int direccion;
 	
-	
-	public Cripto(String etiqueta, int direccion) {
-		//recibe también el parámetro nombre (atributo de la clase padre Moneda) 
+
+	public Cripto(String nombre, String etiqueta, int direccion) {
+		super(nombre);
 		this.etiqueta = etiqueta;
 		this.direccion = direccion;
 	}
-	
-	
+
 
 	public String getEtiqueta() {
 		return etiqueta;
@@ -31,5 +30,9 @@ public abstract class Cripto {//extiende de la clase Moneda
 	public void setDireccion(int direccion) {
 		this.direccion = direccion;
 	}
+
+	public abstract Double getStock();
+
+	public abstract Double getCotizacion();
 
 }

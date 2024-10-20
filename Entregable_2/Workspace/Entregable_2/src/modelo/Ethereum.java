@@ -1,6 +1,6 @@
 package modelo;
 
-public class Ethereum {
+public class Ethereum extends Cripto{
 
 	public Ethereum() {
 		// TODO Auto-generated constructor stub

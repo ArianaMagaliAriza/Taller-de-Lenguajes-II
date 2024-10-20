@@ -1,9 +1,19 @@
 package modelo;
 
-public class Moneda {
-
-	public Moneda() {
-		// TODO Auto-generated constructor stub
+public abstract class Moneda {
+	private String nombre;
+	
+	public Moneda(String nombre) {
+		this.nombre = nombre;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	
 }

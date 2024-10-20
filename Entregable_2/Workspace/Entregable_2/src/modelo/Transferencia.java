@@ -1,9 +1,8 @@
 package modelo;
 
-public class Transferencia {
+public class Transferencia extends Transaccion{
+	private int direccion;
 
-	public Transferencia() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

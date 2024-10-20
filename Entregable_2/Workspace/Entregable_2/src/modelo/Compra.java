@@ -1,6 +1,6 @@
 package modelo;
 
-public class Compra {
+public class Compra extends Transaccion{
 
 	public Compra() {
 		// TODO Auto-generated constructor stub
