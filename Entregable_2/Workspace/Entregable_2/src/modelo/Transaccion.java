@@ -25,5 +25,7 @@ public abstract class Transaccion {
 		this.moneda = moneda;
 	}
 
+	public abstract void consultarBlockchain();
 
+	public abstract void accion();
 }
