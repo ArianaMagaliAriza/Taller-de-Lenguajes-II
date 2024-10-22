@@ -25,7 +25,7 @@ public class Activo {
 		this.moneda = moneda;
 	}
 	
-	public void crearMoneda(String nombre){
+	public void crearMoneda(String nombre){// CREAR MONEDA NO SERÍA LO MISMO QUE SET MONEDA???
 		Moneda m= new Moneda(nombre);
 	}
 

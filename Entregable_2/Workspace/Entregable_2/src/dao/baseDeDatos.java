@@ -58,9 +58,20 @@ public class baseDeDatos{
 	sql = "CREATE TABLE TRANSACCION" +
 		"(" +
 		" MONTO REAL NOT NULL, " +
-		" MONEDA CRIPTO NOT NULL " +
+		" MONEDA CRIPTO NOT NULL " +//PREGUNTAR CÓMO SERÍA CUANDO LOS ATRIBUTOS QUE SON OTRAS CLASES
 		")";
 	stmt.executeUpdate(sql);
 	stmt.close();
+	}
+
+	public static void cerrarConexion(Connection connection) {
+		try {
+			if (connection != null) {
+				connection.close();
+				System.out.println("Desconectado de SQLite");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
