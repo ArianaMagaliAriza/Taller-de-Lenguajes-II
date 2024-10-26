@@ -1,3 +1,5 @@
+(Falta compilar para ver si funciona y guardar la descripcion en la db)
+
 package dao;
 
 import java.sql.Connection;
