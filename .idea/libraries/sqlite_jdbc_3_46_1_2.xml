@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="sqlite-jdbc-3.46.1.2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/Entregable_2/Workspace/Entregable_2/lib/sqlite-jdbc-3.46.1.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
