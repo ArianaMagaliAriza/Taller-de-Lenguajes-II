@@ -1,12 +1,12 @@
 package modelo;
 
 public class Activo {
-	private Double cantidad;
-	private Moneda moneda;
+	private Double cantidad; //representa la cantidad que el usuario posee
+	private String nomenclatura;
 
-	public Activo(Double cantidad, Moneda moneda) {
+	public Activo(Double cantidad, String nomenclatura) {
 		this.cantidad = cantidad;
-		this.moneda = moneda;
+		this.nomenclatura = nomenclatura;
 	}
 
 	public Double getCantidad() {
@@ -17,17 +17,12 @@ public class Activo {
 		this.cantidad = cantidad;
 	}
 
-	public Moneda getMoneda() {
-		return moneda;
+	public String getNomenclatura() {
+		return nomenclatura;
 	}
 
-	public void setMoneda(Moneda moneda) {
-		this.moneda = moneda;
+	public void setNomenclatura(String nomenclatura) {
+		this.nomenclatura = nomenclatura;
 	}
-	
-	public void crearMoneda(String nombre){// CREAR MONEDA NO SERÍA LO MISMO QUE SET MONEDA???
-		Moneda m= new Moneda(nombre);
-	}
-
 }
 
