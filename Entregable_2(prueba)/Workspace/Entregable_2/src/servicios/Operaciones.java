@@ -85,7 +85,7 @@ public class Operaciones {
 			this.cargarActivo(0.0, cripto);
 		}
 		
-			// Solicitar las monedas saber sus valores en dolar y asi calcular el equivalente
+			// Solicitar las monedas para obtener sus valores en dolar y asi calcular el equivalente
 		Moneda monedaCripto = monedaDAO.obtenerMoneda(cripto);
 		Moneda monedaFiat = monedaDAO.obtenerMoneda(fiat);
 			// Solicitar activo FIAT para su posterior actualización
