@@ -10,7 +10,7 @@ import java.util.List;
 
 import modelo.Moneda;
 
-public class MonedaDAO {
+public class MonedaDAOjdbc implements MonedaDAO {
 	private Connection con;
 	
 	public MonedaDAO(Connection con) {
@@ -35,7 +35,7 @@ public class MonedaDAO {
 			return existe;
 		}
 		
-	public void cargarMoneda(Moneda moneda)throws SQLException{
+	public void cargarMoneda(Moneda moneda){
 		try {
 			String query = "INSERT INTO MONEDA(tipo,nombre,nomenclatura,valor_dolar,volatilidad,stock) VALUES(?,?,?,?,?,?)";
 			PreparedStatement st = con.prepareStatement(query);
@@ -52,7 +52,7 @@ public class MonedaDAO {
 		}
 	}
 	
-	public List<Moneda> listarMonedas() throws SQLException{
+	public List<Moneda> listarMonedas(){
 		List<Moneda> monedas = new LinkedList<>();
 		try {
 			Statement st = con.createStatement();
@@ -70,7 +70,7 @@ public class MonedaDAO {
 		return monedas;
 	}
 	
-	public void crearStock(String moneda,Double stock)throws SQLException{
+	public void crearStock(String moneda,Double stock){
          try{
         	// Actualizar el stock en la tabla de monedas
         	String queryActualizar = "UPDATE moneda SET stock = ? WHERE nomenclatura = ?";
@@ -117,7 +117,7 @@ public class MonedaDAO {
         }
 		return moneda;
 	}
-	public void actualizarStock(String moneda,Double stock)throws SQLException{
+	public void actualizarStock(String moneda,Double stock){
         try{
         	// Actualizar el stock del activo en la tabla monedas
         	String queryActualizar = "UPDATE moneda SET stock = stock + ? WHERE nomenclatura = ?";
