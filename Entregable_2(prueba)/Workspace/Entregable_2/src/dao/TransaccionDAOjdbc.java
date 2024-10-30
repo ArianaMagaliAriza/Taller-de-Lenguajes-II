@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 import modelo.Transaccion;
 
-public class TransaccionDAO {
+public class TransaccionDAOjdbc implements TransaccionDAO{
 	Connection con;
 	
-	public TransaccionDAO(Connection con) {
+	public TransaccionDAOjdbc(Connection con) {
 		this.con = con;
 	}
 	
