@@ -13,7 +13,7 @@ import modelo.Moneda;
 public class MonedaDAOjdbc implements MonedaDAO {
 	private Connection con;
 	
-	public MonedaDAO(Connection con) {
+	public MonedaDAOjdbc(Connection con) {
 		this.con=con;
 	}
 	
