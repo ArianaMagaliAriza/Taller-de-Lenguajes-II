@@ -10,7 +10,7 @@ import java.util.List;
 
 import modelo.Activo;
 
-public class ActivoDAOjdbc {
+public class ActivoDAOjdbc implements ActivoDAO{
 	private Connection con;
 	
 	public ActivoDAOjdbc(Connection con) {
