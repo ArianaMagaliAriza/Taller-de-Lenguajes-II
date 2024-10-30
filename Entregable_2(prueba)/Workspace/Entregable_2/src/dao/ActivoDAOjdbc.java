@@ -10,10 +10,10 @@ import java.util.List;
 
 import modelo.Activo;
 
-public class ActivoDAO {
+public class ActivoDAOjdbc {
 	private Connection con;
 	
-	public ActivoDAO(Connection con) {
+	public ActivoDAOjdbc(Connection con) {
 		this.con = con; 
 	}
 	
