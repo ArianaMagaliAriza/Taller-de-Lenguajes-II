@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import dao.ActivoDAO;
-import dao.MonedaDAO;
-import dao.TransaccionDAO;
+import dao.ActivoDAOjdbc;
+import dao.MonedaDAOjdbc;
+import dao.TransaccionDAOjdbc;
 
 public class Main {
 	public static void main (String[]args) {
@@ -17,9 +17,9 @@ public class Main {
 			con=DriverManager.getConnection("jdbc:sqlite:test.db");
 			creacionDeTablasEnBD(con);
 			//Instanciar DAOs y servicios
-			MonedaDAO monedaDAO = new MonedaDAO(con);
-			ActivoDAO activoDAO = new ActivoDAO(con);
-			TransaccionDAO transaccionDAO= new TransaccionDAO(con);
+			MonedaDAOjdbc monedaDAO = new MonedaDAOjdbc(con);
+			ActivoDAOjdbc activoDAO = new ActivoDAOjdbc(con);
+			TransaccionDAOjdbc transaccionDAO= new TransaccionDAOjdbc(con);
 			Operaciones operaciones = new Operaciones(monedaDAO,activoDAO,transaccionDAO);
 			//Interfaz con las operaciones
 			Scanner in = new Scanner(System.in);
