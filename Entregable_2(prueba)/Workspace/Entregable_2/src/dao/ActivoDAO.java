@@ -17,7 +17,7 @@ public class ActivoDAO {
 		this.con = con; 
 	}
 	
-	//chequea si el activo está en la base de datos
+		// Chequea si el activo está en la base de datos
 	public boolean activoEnBD(String nomenclatura) {
 		boolean existe=false;
 		try{
