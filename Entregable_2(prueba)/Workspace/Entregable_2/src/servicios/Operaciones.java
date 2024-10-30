@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import dao.ActivoDAO;
-import dao.MonedaDAO;
-import dao.TransaccionDAO;
+import dao.ActivoDAOjdbc;
+import dao.MonedaDAOjdbc;
+import dao.TransaccionDAOjdbc;
 import modelo.Activo;
 import modelo.Moneda;
 import modelo.Transaccion;
 
 public class Operaciones {
-	private MonedaDAO monedaDAO;
-	private ActivoDAO activoDAO;
-	private TransaccionDAO transaccionDAO;
+	private MonedaDAOjdbc monedaDAO;
+	private ActivoDAOjdbc activoDAO;
+	private TransaccionDAOjdbc transaccionDAO;
 	
-	public Operaciones(MonedaDAO monedaDAO,ActivoDAO activoDAO,TransaccionDAO transaccionDAO) {
+	public Operaciones(MonedaDAOjdbc monedaDAO,ActivoDAOjdbc activoDAO,TransaccionDAOjdbc transaccionDAO) {
 		this.monedaDAO=monedaDAO;
 		this.activoDAO=activoDAO;
 		this.transaccionDAO=transaccionDAO;
