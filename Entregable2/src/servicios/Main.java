@@ -29,7 +29,7 @@ public class Main {
 				System.out.println("2.Listar Monedas");
 				System.out.println("3.Generar Stock");
 				System.out.println("4.Listar Stock");
-				System.out.println("5.Crear Activo");
+				System.out.println("5.Generar Activo");
 				System.out.println("6.Listar Mis Activos");
 				System.out.println("7.Compra");
 				System.out.println("8.Swap");
