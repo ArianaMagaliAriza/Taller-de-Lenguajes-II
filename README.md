@@ -4,4 +4,4 @@ Entregables realizados durante la cursada para el diseño de una billetera virtu
 Entregable 1: diagramas UML, diagramas de secuencia, javadoc.<br>
 Entregable 2: sqlite para realizar la base de datos y posteriormente generar un archivo ejecutable (.jar).
 
-Su equivalente en licenciaturas y APU es "Orientación a Objetos 1" (OO1)
+El equivalente de esta materia en licenciaturas y APU es "Orientación a Objetos 1" (OO1)
