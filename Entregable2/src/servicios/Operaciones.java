@@ -28,8 +28,8 @@ public class Operaciones {
 	}
 	//MONEDAS
 	public void cargarMoneda(String tipo, String nombre,String nomenclatura, double valorEnDolar, double volatilidad, double stock) throws SQLException{
-		if(!tipo.equals("Cripto") && !tipo.equals("Fiat")) {
-			System.out.print("Error, debe ingresar 'Cripto' o 'Fiat'");
+		if(!tipo.equalsIgnoreCase("Cripto") && !tipo.equalsIgnoreCase("Fiat")) {
+			System.out.println("Error, debe ingresar 'Cripto' o 'Fiat'");
 			return;
 		}
 		else {
@@ -56,7 +56,7 @@ public class Operaciones {
             double stockAleatorio = 5000 * random.nextDouble();
 			monedaDAO.crearStock(moneda.getNomenclatura(),stockAleatorio);
 		}
-        System.out.println("Stock generado y actualizado para los activos.");
+        System.out.println("Stock generado y actualizado para las monedas.");
 	}
 	public void listarStocks(int ordenarPor) throws SQLException {
 		List<Moneda> monedas = monedaDAO.listarStocks();
@@ -76,9 +76,17 @@ public class Operaciones {
 			return;
 		}
 		else {
-			Activo activo=new Activo(cantidad,nomenclatura);
-			activoDAO.cargarActivo(activo);
-			System.out.println("Activo agregado exitosamente.");
+			// Si el activo existe, se actualiza el valor en la BD
+			if(activoDAO.activoEnBD(nomenclatura)) {
+				activoDAO.actualizarActivo(nomenclatura, +cantidad);
+				System.out.println("Activo actualizado exitosamente.");
+			}
+			// Sino se crea
+			else {	
+				Activo activo=new Activo(cantidad,nomenclatura);
+				activoDAO.cargarActivo(activo);
+				System.out.println("Activo agregado exitosamente.");
+			}
 		}
 	}
 
@@ -97,6 +105,7 @@ public class Operaciones {
 	public void compra(String cripto, String fiat, Double monto,Scanner scanner) throws SQLException {
 		// Si la cripto aún no es un activo lo creo
 		if(!activoDAO.activoEnBD(cripto)) {
+			System.out.println(cripto + " será agregada a sus activos");
 			this.cargarActivo(0.0, cripto);
 		}
 		
@@ -150,10 +159,9 @@ public class Operaciones {
 			System.out.println(criptoConvertir + " no se encuetra entre tus activos.");
 			return;
 		}
-		//SI NO EXISTEN LOS CREO??
 		if(!activoDAO.activoEnBD(criptoEsperada)) {
-			System.out.println(criptoEsperada + " no se encuetra entre tus activos.");
-			return;
+			System.out.println(criptoEsperada + " no se encuetra entre tus activos, será creado.");
+			this.cargarActivo(0.0,criptoEsperada);
 		}
 			// Obtengo las monedas saber sus valores en dolar y asi calcular el equivalente
 		Moneda monedaCriptoConvertir = monedaDAO.obtenerMoneda(criptoConvertir);
@@ -164,7 +172,7 @@ public class Operaciones {
 		Double valorEquivalente = (monto * monedaCriptoConvertir.getValorEnDolar()) / monedaCriptoEsperada.getValorEnDolar();
 
 			// Confirmar el swap
-	    System.out.printf("Hacer swap de %.6f %s con %.2f %s%n", valorEquivalente, criptoEsperada, monto, criptoConvertir);
+	    System.out.printf("Hacer swap de %.2f %s con %.2f %s%n", valorEquivalente, criptoEsperada, monto, criptoConvertir);
 	    System.out.print("¿Deseas confirmar la operación? (si/no): ");
 	    String confirmacion = scanner.nextLine();
 	         
@@ -194,6 +202,6 @@ public class Operaciones {
 	    String fecha = "Fecha: "+ fechaHora;
 	    Transaccion transaccion = new Transaccion(resumen,fecha);
 	    transaccionDAO.cargarTransaccion(transaccion);
-		System.out.println("Swap realizado con éxito.");
+	    System.out.println("Swap realizado con éxito.");
 	}
 }
