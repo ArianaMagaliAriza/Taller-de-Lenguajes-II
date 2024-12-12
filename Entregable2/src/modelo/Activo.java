@@ -1,12 +1,14 @@
 package modelo;
 
 public class Activo {
+	private int idUsuario;
+	private int idMoneda;
 	private Double cantidad; //representa la cantidad que el usuario posee
-	private String nomenclatura;
 
-	public Activo(Double cantidad, String nomenclatura) {
+	public Activo(int idUsuario,int idMoneda,Double cantidad) {
+		this.idUsuario=idUsuario;
+		this.idMoneda=idMoneda;
 		this.cantidad = cantidad;
-		this.nomenclatura = nomenclatura;
 	}
 
 	public Double getCantidad() {
@@ -17,11 +19,19 @@ public class Activo {
 		this.cantidad = cantidad;
 	}
 
-	public String getNomenclatura() {
-		return nomenclatura;
+	public int getIdUsuario() {
+		return idUsuario;
 	}
 
-	public void setNomenclatura(String nomenclatura) {
-		this.nomenclatura = nomenclatura;
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public int getIdMoneda() {
+		return idMoneda;
+	}
+
+	public void setIdMoneda(int idMoneda) {
+		this.idMoneda = idMoneda;
 	}
 }

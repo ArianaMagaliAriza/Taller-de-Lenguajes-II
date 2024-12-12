@@ -7,15 +7,16 @@ public class Moneda {
 	private double valorEnDolar;
 	private double volatilidad;
 	private double stock;	//cantidad que hay en la billetera
+	private String nombreIcono;
 	
-	
-	public Moneda(String tipo, String nombre,String nomenclatura, double valorEnDolar, double volatilidad, double stock) {
+	public Moneda(String tipo, String nombre,String nomenclatura, double valorEnDolar, double volatilidad, double stock,String nombreIcono) {
 		this.tipo = tipo;
 		this.nombre = nombre;
 		this.nomenclatura = nomenclatura;
 		this.valorEnDolar = valorEnDolar;
 		this.volatilidad = volatilidad;
 		this.stock = stock;
+		this.nombreIcono=nombreIcono;
 	}
 	
 	public String getTipo() {
@@ -53,6 +54,13 @@ public class Moneda {
 	}
 	public void setStock(double stock) {
 		this.stock = stock;
+	}
+
+	public String getNombreIcono() {
+		return nombreIcono;
+	}
+	public void setNombreIcono(String nombreIcono) {
+		this.nombreIcono = nombreIcono;
 	}
 
 	

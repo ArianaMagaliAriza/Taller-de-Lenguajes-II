@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,19 +54,19 @@ public class MonedaDAOjdbc implements MonedaDAO{
 	}
 	
 	public List<Moneda> listarMonedas(){
-		List<Moneda> monedas = new LinkedList<>();
+		List<Moneda> monedas = new ArrayList<>();
 		try {
 			Statement st = con.createStatement();
-			String query = "SELECT * FROM moneda ORDER BY valor_dolar";
+			String query = "SELECT * FROM moneda";
 			ResultSet res = st.executeQuery(query);
 			while(res.next()) {
-				Moneda moneda = new Moneda(res.getString("tipo"),res.getString("nombre"),res.getString("nomenclatura"),res.getDouble("valor_dolar"),res.getDouble("volatilidad"),res.getDouble("stock"));
+				Moneda moneda = new Moneda(res.getString("tipo"),res.getString("nombre"),res.getString("nomenclatura"),res.getDouble("valor_dolar"),res.getDouble("volatilidad"),res.getDouble("stock"),res.getString("nombre_icono"));
 				monedas.add(moneda);
 			}
 			st.close();
 			res.close();
 		}catch (SQLException e) {
-			System.out.println("Error de SQL: " + e.getMessage());
+			System.out.println("Error de SQL(listarMoneda()): " + e.getMessage());
 		}
 		return monedas;
 	}
@@ -82,7 +83,7 @@ public class MonedaDAOjdbc implements MonedaDAO{
         } catch (SQLException e) {
             System.out.print("Error de SQL:"+e.getMessage());
         }
-	}
+	}/*
 	public List<Moneda> listarStocks() {
 		List<Moneda> monedas = new LinkedList<>();
 		try {
@@ -98,7 +99,8 @@ public class MonedaDAOjdbc implements MonedaDAO{
             System.out.print("Error de SQL:"+e.getMessage());
         }
 		return monedas;
-	}
+	}*/
+	/*
 	public Moneda obtenerMoneda(String nomenclatura) {
 		Moneda moneda=null;
 		try {
@@ -116,6 +118,22 @@ public class MonedaDAOjdbc implements MonedaDAO{
             System.out.print("Error de SQL:"+e.getMessage());
         }
 		return moneda;
+	}
+*/
+	public Moneda obtenerMoneda(int id) {
+		Moneda moneda=null;
+			try {
+				String query = "SELECT * FROM MONEDA WHERE ID=?";
+				PreparedStatement st = con.prepareStatement(query);
+				st.setInt(1,id);
+				ResultSet res = st.executeQuery();
+				moneda = new Moneda(res.getString("TIPO"),res.getString("NOMBRE"),res.getString("NOMENCLATURA"),res.getDouble("VALOR_DOLAR"),res.getDouble("VOLATILIDAD"),res.getDouble("STOCK"),res.getString("NOMBRE_ICONO"));
+
+				st.close();
+			} catch (SQLException e) {
+	            System.out.print("Error de SQL(obtenerMoneda):"+e.getMessage());
+	        }
+			return moneda;
 	}
 	public void actualizarStock(String moneda,Double stock){
         try{

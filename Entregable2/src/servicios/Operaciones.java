@@ -2,6 +2,7 @@ package servicios;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -9,10 +10,14 @@ import java.util.Scanner;
 
 import dao.ActivoDAOjdbc;
 import dao.MonedaDAOjdbc;
+import dao.PersonaDAOjdbc;
 import dao.TransaccionDAOjdbc;
+import dao.UsuarioDAOjdbc;
 import modelo.Activo;
 import modelo.Moneda;
+import modelo.Persona;
 import modelo.Transaccion;
+import modelo.Usuario;
 import modelo.ComparadorNomenclaturaMoneda;
 import modelo.ComparadorNomenclaturaActivo;
 
@@ -20,33 +25,62 @@ public class Operaciones {
 	private MonedaDAOjdbc monedaDAO;
 	private ActivoDAOjdbc activoDAO;
 	private TransaccionDAOjdbc transaccionDAO;
+	private UsuarioDAOjdbc usuarioDAO;
+	private PersonaDAOjdbc personaDAO;
 	
-	public Operaciones(MonedaDAOjdbc monedaDAO,ActivoDAOjdbc activoDAO,TransaccionDAOjdbc transaccionDAO) {
+	public Operaciones() {}
+	public Operaciones(MonedaDAOjdbc monedaDAO,ActivoDAOjdbc activoDAO,TransaccionDAOjdbc transaccionDAO,UsuarioDAOjdbc usuarioDAO,PersonaDAOjdbc personaDAO) {
 		this.monedaDAO=monedaDAO;
 		this.activoDAO=activoDAO;
 		this.transaccionDAO=transaccionDAO;
+		this.usuarioDAO=usuarioDAO;
+		this.personaDAO=personaDAO;
+	}
+	//TRANSACCIONES
+	public List<Transaccion> listarTransacciones(int idUsuario){
+		List<Transaccion> transacciones = transaccionDAO.listarTransacciones(idUsuario);
+		return transacciones;
+	}
+	//PERSONAS
+	public int cargarPersona(String email,String apellidos) {
+		Persona persona=new Persona(email,apellidos);
+		return personaDAO.cargarPersona(persona);
+	}
+	public Persona obtenerPersona(int id) {
+		return personaDAO.obtenerPersona(id);
+	}
+	
+	//USUARIOS
+	public void cargarUsuario(String nombres,String apellidos,String email,String password,Boolean terminos) {
+		int id = this.cargarPersona(nombres,apellidos);
+		Usuario usuario=new Usuario(id,email,password,terminos);
+		usuarioDAO.cargarUsuario(usuario);
+	}
+	public boolean usuarioEnBD(String email){
+		return usuarioDAO.usuarioEnBD(email);
+	}
+	public Usuario obtenerUsuario(String email) {
+		return usuarioDAO.obtenerUsuario(email);
 	}
 	//MONEDAS
-	public void cargarMoneda(String tipo, String nombre,String nomenclatura, double valorEnDolar, double volatilidad, double stock) throws SQLException{
+	public void cargarMoneda(String tipo, String nombre,String nomenclatura, double valorEnDolar, double volatilidad, double stock,String nombreIcono) throws SQLException{
 		if(!tipo.equalsIgnoreCase("Cripto") && !tipo.equalsIgnoreCase("Fiat")) {
 			System.out.println("Error, debe ingresar 'Cripto' o 'Fiat'");
 			return;
 		}
 		else {
-			Moneda moneda=new Moneda(tipo,nombre,nomenclatura,valorEnDolar,volatilidad,stock);
+			Moneda moneda=new Moneda(tipo,nombre,nomenclatura,valorEnDolar,volatilidad,stock,nombreIcono);
 			monedaDAO.cargarMoneda(moneda);
 			System.out.println("Moneda agregada exitosamente.");
 		}
 	}
-	public void listarMonedas(int ordenarPor) throws SQLException{
+	public List<Moneda> listarMonedas(int ordenarPor) throws SQLException{
 			List<Moneda> monedas = monedaDAO.listarMonedas();
 			// Si se ingreso el numero 2, ordeno las monedas por nomenclatura
 			if(ordenarPor == 2) {
 				Collections.sort(monedas,new ComparadorNomenclaturaMoneda());
 			}
-			for(Moneda moneda: monedas){
-				System.out.println(moneda.getNombre()+"("+moneda.getNomenclatura()+")"+" Valor:"+moneda.getValorEnDolar()+" USD"+ " Volatilidad:"+moneda.getVolatilidad()+" Stock:" +moneda.getStock());
-			}
+			return monedas;
 	}
 	public void generarStock() throws SQLException{
         Random random = new Random();
@@ -58,6 +92,10 @@ public class Operaciones {
 		}
         System.out.println("Stock generado y actualizado para las monedas.");
 	}
+	public Moneda obtenerMoneda(int id) {
+		return monedaDAO.obtenerMoneda(id);
+	}
+	/*
 	public void listarStocks(int ordenarPor) throws SQLException {
 		List<Moneda> monedas = monedaDAO.listarStocks();
 		//Si se ingreso el numero 2, ordeno los stocks por nomenclatura
@@ -67,10 +105,13 @@ public class Operaciones {
 		for(Moneda moneda: monedas){
 			System.out.println(moneda.getNombre()+"("+moneda.getNomenclatura()+")"+" Stock:" +moneda.getStock());
 		}
-	}
-	
+	}*/
 	//ACTIVOS
-	public void cargarActivo(Double cantidad,String nomenclatura) {
+	public boolean activoEnBD(int id) {
+		return(activoDAO.activoEnBD(id));
+	}
+	/*
+	public void cargarActivo(int idUsuario,int idMoneda,Double cantidad) {
 		if(!monedaDAO.monedaEnBD(nomenclatura)) {
 			System.out.println("Error, la moneda no se encuentra en la BD.");
 			return;
@@ -83,24 +124,26 @@ public class Operaciones {
 			}
 			// Sino se crea
 			else {	
-				Activo activo=new Activo(cantidad,nomenclatura);
+				Activo activo=new Activo(idUsuario,idMoneda,cantidad);
 				activoDAO.cargarActivo(activo);
 				System.out.println("Activo agregado exitosamente.");
 			}
 		}
-	}
+	}*/
 
-	public void listarActivos(int ordenarPor) throws SQLException{
+	public List<Activo> listarActivos(int ordenarPor) throws SQLException{
 			List<Activo> activos = activoDAO.listarActivos();
 			//Si se ingreso el numero 2, ordeno los activos por nomenclatura
 			if(ordenarPor == 2) {
 				Collections.sort(activos,new ComparadorNomenclaturaActivo());
 			}
-			for(Activo activo: activos){
-				System.out.println(activo.getNomenclatura()+"\t"+activo.getCantidad());
-			}
+			return activos;
 	}
-	
+
+	public void generarActivosPrueba(int id) throws SQLException{
+        activoDAO.cargarStockActivo(id);
+       }
+	/*
 	//COMPRA Y SWAP
 	public void compra(String cripto, String fiat, Double monto,Scanner scanner) throws SQLException {
 		// Si la cripto aún no es un activo lo creo
@@ -156,11 +199,11 @@ public class Operaciones {
 	public void swap(String criptoConvertir, Double monto, String criptoEsperada,Scanner scanner) throws SQLException {
 		//se verifica si las criptos están entre sus activos
 		if(!activoDAO.activoEnBD(criptoConvertir)) {
-			System.out.println(criptoConvertir + " no se encuetra entre tus activos.");
+			System.out.println(criptoConvertir + " no se encuetra entre sus activos.");
 			return;
 		}
 		if(!activoDAO.activoEnBD(criptoEsperada)) {
-			System.out.println(criptoEsperada + " no se encuetra entre tus activos, será creado.");
+			System.out.println(criptoEsperada + " no se encuetra entre sus activos, será creado.");
 			this.cargarActivo(0.0,criptoEsperada);
 		}
 			// Obtengo las monedas saber sus valores en dolar y asi calcular el equivalente
@@ -202,6 +245,6 @@ public class Operaciones {
 	    String fecha = "Fecha: "+ fechaHora;
 	    Transaccion transaccion = new Transaccion(resumen,fecha);
 	    transaccionDAO.cargarTransaccion(transaccion);
-	    System.out.println("Swap realizado con éxito.");
-	}
+		System.out.println("Swap realizado con éxito.");
+	}*/
 }
