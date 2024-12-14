@@ -95,9 +95,10 @@ public class CotizacionesGUI extends JFrame{
 
 	                if (columna == 3) { // Botón "Comprar"
 	                    String cripto = (String) tablaMonedas.getValueAt(fila, 1);
+			    String precio = tablaMonedas.getValueAt(fila, 2).toString();
 	                    mostrarMensaje("Comprar " + cripto);
 	                    dispose();
-	                    controlador.abrirVentanaCompra(cripto);
+	                    controlador.abrirVentanaCompra(cripto, precio);
 	                } else if (columna == 4) { // Botón "Swap"
 	                    String cripto = (String) tablaMonedas.getValueAt(fila, 1);
 	                    mostrarMensaje("Swap " + cripto);
