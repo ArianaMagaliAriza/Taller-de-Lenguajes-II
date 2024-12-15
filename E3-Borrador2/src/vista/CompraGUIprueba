@@ -1,0 +1,249 @@
+package vista;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
+import modelo.Activo;
+import modelo.Moneda;
+import modelo.Persona;
+import modelo.Usuario;
+import controlador.Controladores;
+
+public class CompraGUIprueba extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private Controladores controlador;
+    private Moneda monedaSeleccionada;
+    private List<Activo> activosUsuario;
+    private Moneda monedaEncontrada;
+
+    // Componentes UI
+    private JPanel mainPanel;
+    private JLabel userLabel, stockLabel, precioLabel, montoLabel, resultadoLabel;
+    private JTextField montoField;
+    private JComboBox<String> monedaBox;
+    private JButton convertirButton, realizarCompraButton, cancelarButton, cerrarSesionButton;
+
+    public CompraGUI(Controladores controlador, String cripto, String precio) {
+        this.controlador = controlador;
+        inicializarComponentes();
+        cargarDatosIniciales(cripto, precio);
+        configurarListeners(precio);
+    }
+
+    private void inicializarComponentes() {
+        setTitle("Billetera Virtual - Compra");
+        setSize(800, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        mainPanel = new JPanel(new BorderLayout());
+        add(mainPanel);
+
+        // Panel Superior
+        JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        userLabel = new JLabel();
+        cerrarSesionButton = new JButton("Cerrar sesión");
+        userPanel.add(userLabel);
+        userPanel.add(cerrarSesionButton);
+        mainPanel.add(userPanel, BorderLayout.NORTH);
+
+        // Panel Central
+        JPanel centralPanel = new JPanel(null);
+
+        stockLabel = new JLabel();
+        stockLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        stockLabel.setBounds(20, 20, 350, 30);
+
+        precioLabel = new JLabel();
+        precioLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        precioLabel.setBounds(20, 60, 350, 30);
+
+        montoLabel = new JLabel("Quiero comprar con:");
+        montoLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        montoLabel.setBounds(20, 100, 150, 30);
+
+        montoField = new JTextField();
+        montoField.setBounds(170, 100, 100, 30);
+
+        monedaBox = new JComboBox<>();
+        monedaBox.setBounds(280, 100, 80, 30);
+
+        convertirButton = new JButton("Convertir");
+        convertirButton.setBounds(370, 100, 100, 30);
+
+        resultadoLabel = new JLabel("Equivale a: ");
+        resultadoLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        resultadoLabel.setBounds(20, 140, 350, 30);
+
+        centralPanel.add(stockLabel);
+        centralPanel.add(precioLabel);
+        centralPanel.add(montoLabel);
+        centralPanel.add(montoField);
+        centralPanel.add(monedaBox);
+        centralPanel.add(convertirButton);
+        centralPanel.add(resultadoLabel);
+
+        mainPanel.add(centralPanel, BorderLayout.CENTER);
+
+        // Panel Inferior
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        realizarCompraButton = new JButton("Realizar Compra");
+        cancelarButton = new JButton("Cancelar");
+        bottomPanel.add(realizarCompraButton);
+        bottomPanel.add(cancelarButton);
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    private void cargarDatosIniciales(String cripto, String precio) {
+        Usuario usuario = controlador.getUsuarioLogueado();
+        Persona persona = controlador.devolverPersona(usuario.getId());
+
+        userLabel.setText(persona.getNombre() + " " + persona.getApellido());
+
+        String nombreCripto = cripto.substring(cripto.length() - 4, cripto.length() - 1);
+        List<Moneda> monedas = controlador.retornarMonedas();
+
+        for (Moneda moneda : monedas) {
+            if (moneda.getNomenclatura().equals(nombreCripto)) {
+                monedaEncontrada = moneda;
+                break;
+            }
+        }
+
+        if (monedaEncontrada == null) {
+            mostrarMensaje("No se encontró la criptomoneda especificada.");
+            dispose();
+            return;
+        }
+
+        activosUsuario = controlador.devolverActivosUsuario(usuario.getId());
+
+        List<Moneda> monedasFiat = new ArrayList<>();
+        for (Moneda moneda : monedas) {
+            if ("fiat".equalsIgnoreCase(moneda.getTipo()) && controlador.esActivo(moneda, activosUsuario)) {
+                monedasFiat.add(moneda);
+            }
+        }
+
+        for (Moneda moneda : monedasFiat) {
+            monedaBox.addItem(moneda.getNomenclatura());
+        }
+
+        stockLabel.setText("Stock disponible: " + monedaEncontrada.getStock() + " " + monedaEncontrada.getNomenclatura());
+        precioLabel.setText("Precio de Compra: $" + precio);
+    }
+
+    private void configurarListeners(String precio) {
+        convertirButton.addActionListener(e -> convertirMonto(precio));
+
+        realizarCompraButton.addActionListener(e -> realizarCompra(precio));
+
+        cancelarButton.addActionListener(e -> {
+            dispose();
+            controlador.abrirVentanaCotizaciones();
+        });
+
+        cerrarSesionButton.addActionListener(e -> {
+            dispose();
+            controlador.abrirVentanaLogin();
+        });
+
+        monedaBox.addActionListener(e -> {
+            String seleccion = (String) monedaBox.getSelectedItem();
+            List<Moneda> monedas = controlador.retornarMonedas();
+            for (Moneda moneda : monedas) {
+                if (moneda.getNomenclatura().equals(seleccion)) {
+                    monedaSeleccionada = moneda;
+                    break;
+                }
+            }
+        });
+    }
+
+    private void convertirMonto(String precio) {
+        try {
+            double monto = Double.parseDouble(montoField.getText());
+            if (monedaSeleccionada == null) {
+                mostrarMensaje("Seleccione una moneda válida antes de convertir.");
+                return;
+            }
+
+            double valorEnDolar = monedaSeleccionada.getValorEnDolar();
+            double cotizacionCripto = Double.parseDouble(precio);
+            double resultado = (monto / valorEnDolar) / cotizacionCripto;
+
+            resultadoLabel.setText(String.format("Equivale a: %.6f %s", resultado, monedaEncontrada.getNomenclatura()));
+        } catch (NumberFormatException ex) {
+            mostrarMensaje("Ingrese un número válido en el campo de monto.");
+        }
+    }
+
+    private void realizarCompra(String precio) {
+        try {
+            double monto = Double.parseDouble(montoField.getText());
+
+            if (monto <= 0) {
+                mostrarMensaje("El monto debe ser mayor a 0.");
+                return;
+            }
+
+            if (monedaSeleccionada == null) {
+                mostrarMensaje("Seleccione una moneda válida antes de realizar la compra.");
+                return;
+            }
+
+            double saldoUsuario = 0;
+            for (Activo activo : activosUsuario) {
+                if (activo.getNomenclatura().equals(monedaSeleccionada.getNomenclatura())) {
+                    saldoUsuario = activo.getCantidad();
+                    break;
+                }
+            }
+
+            if (saldoUsuario < monto) {
+                mostrarMensaje("No tienes saldo suficiente en " + monedaSeleccionada.getNomenclatura() + " para esta compra.");
+                return;
+            }
+
+            double valorEnDolar = monedaSeleccionada.getValorEnDolar();
+            double cotizacionCripto = Double.parseDouble(precio);
+            double cantidadCripto = (monto / valorEnDolar) / cotizacionCripto;
+
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    String.format("¿Deseas comprar %.6f %s por %s %s?",
+                            cantidadCripto, monedaEncontrada.getNomenclatura(), monto, monedaSeleccionada.getNomenclatura()),
+                    "Confirmar Compra",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                actualizarActivos(monto, cantidadCripto);
+                mostrarMensaje("Compra realizada con éxito.");
+                dispose();
+                controlador.abrirVentanaCotizaciones();
+            }
+        } catch (NumberFormatException ex) {
+            mostrarMensaje("Por favor, ingrese un número válido en el campo de monto.");
+        }
+    }
+
+    private void actualizarActivos(double monto, double cantidadCripto) {
+        for (Activo activo : activosUsuario) {
+            if (activo.getNomenclatura().equals(monedaSeleccionada.getNomenclatura())) {
+                activo.setCantidad(activo.getCantidad() - monto);
+            }
+            if (activo.getNomenclatura().equals(monedaEncontrada.getNomenclatura())) {
+                activo.setCantidad(activo.getCantidad() + cantidadCripto);
+            }
+        }
+
+    }
+    //Hace falta guardar los activos en la base de datos, ayuda voy a morir
+
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+}
