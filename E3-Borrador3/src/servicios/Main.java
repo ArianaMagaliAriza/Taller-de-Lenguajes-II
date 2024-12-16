@@ -27,6 +27,7 @@ public class Main {
 			Controladores controlador = new Controladores(operaciones);
 			LoginGUI loginVista = new LoginGUI(controlador);
 			
+			controlador.crearMonedasPrueba();
 			controlador.mostrarLogin(loginVista);
 			
 			//cerrar conexion cuando el usuario cierra la aplicacion
