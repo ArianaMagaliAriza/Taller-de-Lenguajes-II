@@ -44,18 +44,8 @@ public class CotizacionesGUI extends JFrame{
 	        cerrarSesionButton.setFont(new Font("SansSerif", Font.BOLD, 12));
 	        userPanel.add(usuarioLabel);
 	        userPanel.add(cerrarSesionButton);
+	        userPanel.setBackground(new Color(235,247,254));
 	        mainPanel.add(userPanel, BorderLayout.NORTH);
-
-
-	        compraButton = new JButton("Compra");
-	        compraButton.setBackground(Color.GREEN);
-	        compraButton.setForeground(Color.WHITE); // Texto blanco
-	        compraButton.setFont(new Font("SansSerif", Font.BOLD, 12));
-	        swapButton = new JButton("Swap");
-	        swapButton.setBackground(Color.ORANGE);
-	        swapButton.setForeground(Color.WHITE); // Texto blanco
-	        swapButton.setFont(new Font("SansSerif", Font.BOLD, 12));
-	        
 	        
 	        // Panel Central (Tabla de Cotizaciones)
 	        String[] columnas = {"","Cripto", "Precio de Compra(USD)","",""};
@@ -119,8 +109,19 @@ public class CotizacionesGUI extends JFrame{
        	 	//tablaMonedas.setEnabled(false); // Desactiva la edición de la tabla
        	 	tablaMonedas.setShowHorizontalLines(false); // Quita las lineas horizontales
        	 	tablaMonedas.setShowVerticalLines(false);   // Quita las lineas verticales
-	        JScrollPane scrollPane = new JScrollPane(tablaMonedas);
-	        mainPanel.add(scrollPane, BorderLayout.CENTER);
+	        tablaMonedas.setBackground(new Color(235,247,254));
+            	// Configurar TableRowSorter para habilitar el ordenamiento
+	        TableRowSorter<ModeloTablaMonedas> sorter = new TableRowSorter<>(new ModeloTablaMonedas(datos, columnas));
+	        tablaMonedas.setRowSorter(sorter);
+        	// Centrar el contenido de las celdas
+            	DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+            	centrado.setHorizontalAlignment(SwingConstants.CENTER); // Centrar horizontalmente
+            	// Aplicar el renderizador a todas las columnas(excepto a la primera que es el icono)
+            	for (int i = 1; i < tablaMonedas.getColumnCount(); i++) {
+                	tablaMonedas.getColumnModel().getColumn(i).setCellRenderer(centrado);
+            	}
+            
+	        mainPanel.add(new JScrollPane(tablaMonedas), BorderLayout.CENTER);
 	        
 	        
         	// Panel Inferior (Botón Volver)
@@ -130,6 +131,7 @@ public class CotizacionesGUI extends JFrame{
         	volverButton.setForeground(Color.WHITE); // Texto blanco
         	volverButton.setFont(new Font("SansSerif", Font.BOLD, 12));
         	bottomPanel.add(volverButton);
+        	bottomPanel.setBackground(new Color(235,247,254));
         	mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 	
         	// Listeners
