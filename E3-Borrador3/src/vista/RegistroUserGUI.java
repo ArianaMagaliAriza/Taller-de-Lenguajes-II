@@ -32,14 +32,14 @@ public class RegistroUserGUI extends JFrame {
         // Crear el panel principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
-        mainPanel.setBackground(new Color(245, 245, 220));
+        mainPanel.setBackground(new Color(231,247,255));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // Etiquetas y campos de texto para los datos de registro
         JLabel nombresLabel = new JLabel("Nombres:");
-        nombresLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        nombresLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 0;
         mainPanel.add(nombresLabel, gbc);
@@ -51,7 +51,7 @@ public class RegistroUserGUI extends JFrame {
         mainPanel.add(nombresField, gbc);
 
         JLabel apellidosLabel = new JLabel("Apellidos:");
-        apellidosLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        apellidosLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 1;
         mainPanel.add(apellidosLabel, gbc);
@@ -63,7 +63,7 @@ public class RegistroUserGUI extends JFrame {
         mainPanel.add(apellidosField, gbc);
 
         JLabel emailLabel = new JLabel("Email:");
-        emailLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        emailLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 2;
         mainPanel.add(emailLabel, gbc);
@@ -75,7 +75,7 @@ public class RegistroUserGUI extends JFrame {
         mainPanel.add(emailField, gbc);
 
         JLabel passwordLabel = new JLabel("Contraseña:");
-        passwordLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        passwordLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 3;
         mainPanel.add(passwordLabel, gbc);
@@ -88,16 +88,18 @@ public class RegistroUserGUI extends JFrame {
 
         // Checkbox aceptar terminos y condiciones
         terminos = new JCheckBox("Aceptar términos y condiciones");
-        terminos.setFont(new Font("Arial", Font.PLAIN, 14));
+        terminos.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        terminos.setBackground(new Color(231,247,255));
         gbc.gridx = 0;
         gbc.gridy = 4;
         mainPanel.add(terminos, gbc);
         
         // Botón de registrar
         registerButton = new JButton("Registrar");
-        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
+        registerButton.setFont(new Font("SansSerif", Font.BOLD, 16));
         registerButton.setPreferredSize(new Dimension(140, 40));
-        registerButton.setBackground(new Color(203, 123, 42 ));
+        registerButton.setBackground(new Color(0, 123, 255)); // Azul
+        registerButton.setForeground(Color.WHITE); // Texto blanco
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 2;
