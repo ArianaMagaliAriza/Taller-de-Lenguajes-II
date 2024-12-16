@@ -44,8 +44,9 @@ public class MisOperacionesGUI extends JFrame{
 	        volverButton = new JButton("Volver");
 	        volverButton.setBackground(new Color(0, 123, 255)); // Azul
 	        volverButton.setForeground(Color.WHITE); // Texto blanco
-	        volverButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+	        volverButton.setFont(new Font("SansSerif", Font.BOLD, 13));
 	        bottomPanel.add(volverButton);
+	        bottomPanel.setBackground(new Color(235,247,254));
 	        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
 	        // Evento del botón Volver (Ejemplo)
