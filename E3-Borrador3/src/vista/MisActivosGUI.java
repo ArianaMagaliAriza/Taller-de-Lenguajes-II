@@ -33,12 +33,11 @@ public class MisActivosGUI extends JFrame {
 
         // PANEL PRINCIPAL
         JPanel panelPrincipal = new JPanel(new BorderLayout());
-        panelPrincipal.setBackground(Color.WHITE);
+	    
         // PANEL SUPERIOR
-    	
         JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JLabel usuarioLabel = new JLabel(persona.getNombres() +" "+ persona.getApellidos());
-        usuarioLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        usuarioLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         cerrarSesionButton = new JButton("Cerrar Sesión");
         cerrarSesionButton.setBackground(new Color(0, 123, 255)); // Azul
         cerrarSesionButton.setForeground(Color.WHITE); // Texto blanco
@@ -54,11 +53,10 @@ public class MisActivosGUI extends JFrame {
         
         // CONFIGURAR TABLA
         Double balance=0.0;
-        Double valorDolarARS=1000.0; //valor de 1 USD en la moneda fiduciaria
+        Double valorDolarARS=1000.0; //valor de 1 USD en la moneda fiduciaria(ARS en este caso)
     	String[] columnas={"","Cripto","Monto"};
     	
     	// Crear una lista para las filas
-    	
     	ArrayList<Object[]> filas = new ArrayList<>();
     	ArrayList<Activo> activosUsuario=(ArrayList<Activo>) controlador.devolverActivosUsuario(usuario.getId());
     	for(Activo activo:activosUsuario) {
@@ -76,11 +74,26 @@ public class MisActivosGUI extends JFrame {
         tablaActivos.setEnabled(false);
         tablaActivos.setShowVerticalLines(false);
         tablaActivos.setShowHorizontalLines(false);
+        tablaActivos.setBackground(new Color(235,247,254));
+
+        // Configurar TableRowSorter para habilitar el ordenamiento
+        TableRowSorter<ModeloTablaMonedas> sorter = new TableRowSorter<>(modelo);
+        tablaActivos.setRowSorter(sorter);
+        // Centrar el contenido de las celdas
+        DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(SwingConstants.CENTER); // Centrar horizontalmente
+        // Aplicar el renderizador a todas las columnas(excepto a la primera que es el icono)
+        for (int i = 1; i < tablaActivos.getColumnCount(); i++) {
+            tablaActivos.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
         panelPrincipal.add(new JScrollPane(tablaActivos),BorderLayout.CENTER);
         // Balance
-        balanceLabel = new JLabel("Balance: "+balance+" ARS");
-        balanceLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        // Formato personalizado: separador de miles y 2 decimales
+        DecimalFormat formato = new DecimalFormat("#,##0.00");
+        balanceLabel = new JLabel("Balance: "+formato.format(balance)+" ARS");
+        balanceLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
         panelSuperior.add(balanceLabel,BorderLayout.AFTER_LAST_LINE);
+        panelSuperior.setBackground(new Color(235,247,254));
 
         // Panel Inferior (Botón Volver)
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -99,6 +112,7 @@ public class MisActivosGUI extends JFrame {
         cotizacionesButton.setForeground(Color.WHITE); // Texto blanco
         cotizacionesButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         panelInferior.add(cotizacionesButton);
+        panelInferior.setBackground(new Color(235,247,254));
         panelPrincipal.add(panelInferior,BorderLayout.SOUTH);
         
         // Agregar el panel a la ventana
@@ -133,31 +147,31 @@ public class MisActivosGUI extends JFrame {
     
     // Método para actualizar la tabla al generar datos de prueba
     private void recargarTablaActivos(int idUsuario) {
+    	// Obtener el modelo actual de la tabla
+        ModeloTablaMonedas modelo = (ModeloTablaMonedas) tablaActivos.getModel();
+	    
+        // Limpiar el modelo existente
+        modelo.setRowCount(0);
+	    
         // Crear una lista para las filas
-        ArrayList<Object[]> filas = new ArrayList<>();
         Double balance=0.0;
         Double valorDolarARS=1000.0; //valor de 1 USD en la moneda fiduciaria
         // Obtener los activos actualizados del usuario
         for (Activo activo : controlador.devolverActivosUsuario(idUsuario)) {
             Moneda moneda = controlador.devolverMoneda(activo.getIdMoneda());
     		balance+=(activo.getCantidad()*moneda.getValorEnDolar()*valorDolarARS);
-            filas.add(new Object[]{
+
+            // Agregar filas al modelo
+    		modelo.addRow(new Object[]{
                 new ImageIcon(getClass().getResource("/imagenes/" + moneda.getNombreIcono())),
                 moneda.getNombre() + "(" + moneda.getNomenclatura() + ")",
                 activo.getCantidad()
             });
         }
         
-        // Convertir la lista a un Object[][]
-        Object[][] monedas = filas.toArray(new Object[0][]);
-
-        // Actualizar el modelo de la tabla
-        ModeloTablaMonedas modelo = new ModeloTablaMonedas(monedas, new String[]{"", "Cripto", "Monto"});
-        tablaActivos.setModel(modelo); // Reemplaza el modelo de la tabla
         tablaActivos.revalidate();          // Reorganiza la tabla
         tablaActivos.repaint();             // Redibuja la tabla
-
-        balanceLabel.setText("Balance: ARS "+balance);
+        balanceLabel.setText("Balance: ARS "+balance); //Actualiza balance en ARS
     }
     
     public void mostrarMensaje(String mensaje) {
