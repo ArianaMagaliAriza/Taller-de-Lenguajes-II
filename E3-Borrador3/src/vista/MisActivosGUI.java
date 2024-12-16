@@ -132,6 +132,7 @@ public class MisActivosGUI extends JFrame {
 
         exportarCSVButton.addActionListener(e ->{
         	controlador.generarArchivoCSV(activosUsuario);
+        	mostrarMensaje("Archivo CSV generado con éxito!");
         });
         
         misOperacionesButton.addActionListener(e ->{
