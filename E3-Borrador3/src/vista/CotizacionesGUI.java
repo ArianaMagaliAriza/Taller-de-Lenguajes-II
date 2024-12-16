@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class CotizacionesGUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private JTable tablaMonedas;
-	private JButton volverButton,cerrarSesionButton,compraButton,swapButton;
+	private JButton volverButton,cerrarSesionButton;
 	private Controladores controlador;
 
 		public CotizacionesGUI(Controladores controlador) {
@@ -92,6 +92,11 @@ public class CotizacionesGUI extends JFrame{
 	                    dispose();
 	                    controlador.abrirVentanaCompra(cripto,precio);
 	                } else if (columna == 4) { // Botón "Swap"
+	                   String boton=(String) tablaMonedas.getValueAt(fila, columna);
+	                   if(!boton.equals("Swap")) {
+	                	mostrarMensaje("La cripto seleccionada no está entre sus activos");
+	                	return;
+	                    }
 	                    String nombreCripto = (String) tablaMonedas.getValueAt(fila, 1);
 	                    String precio = tablaMonedas.getValueAt(fila, 2).toString();
 	                    //extraer el nombre de la cripto sin la nomeclatura
@@ -106,7 +111,6 @@ public class CotizacionesGUI extends JFrame{
 	        
         	// mejoras de la tabla
         	tablaMonedas.setRowHeight(50);
-       	 	//tablaMonedas.setEnabled(false); // Desactiva la edición de la tabla
        	 	tablaMonedas.setShowHorizontalLines(false); // Quita las lineas horizontales
        	 	tablaMonedas.setShowVerticalLines(false);   // Quita las lineas verticales
 	        tablaMonedas.setBackground(new Color(235,247,254));
