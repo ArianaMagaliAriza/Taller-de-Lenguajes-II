@@ -147,6 +147,12 @@ public class Controladores {
     }
 
 	// COTIZACIONES
+    public void actualizarCotizaciones(List<Double>cotizaciones) {
+    	operaciones.actualizarPrecios(cotizaciones);
+    }
+    public void crearMonedasPrueba() {
+    	operaciones.cargarMonedasPrueba();
+    }
 	//Chequea si la moneda está entre los activos del usuario por el nombre
 	public boolean esActivo(Moneda moneda,List<Activo>activosUsuario) {
 		return operaciones.esActivo(moneda, activosUsuario);
@@ -226,7 +232,6 @@ public class Controladores {
 			strLine=moneda.getNombre()+"("+moneda.getNomenclatura()+")"+","+activo.getCantidad();
 			str += strLine+"\n";
 		}
-		System.out.println(str);
 		out.write(str);
 		out.close();
 		} catch (IOException e) {
@@ -265,12 +270,6 @@ public class Controladores {
     
     
     // REGISTRO
-	public void mostrarRegistro(RegistroUserGUI vistaRegistro) {
-		vistaRegistro.setVisible(true);
-	}
-	public void ocultarRegistro(RegistroUserGUI vistaRegistro) {
-		vistaRegistro.setVisible(false);
-	}
 	// Método para manejar el registro
     public void handleRegistro(RegistroUserGUI vistaRegistro,String nombres,String apellidos,String email,String password,Boolean terminos) throws RegistroException {
         if (nombres.isEmpty() || apellidos.isEmpty() || email.isEmpty() || password.isEmpty()) {
