@@ -83,33 +83,18 @@ public class Operaciones {
 			}
 			return monedas;
 	}
-	public void generarStock() throws SQLException{
-        Random random = new Random();
-		List<Moneda> monedas = monedaDAO.listarMonedas();
-		for(Moneda moneda: monedas){
-            // Generar una cantidad aleatoria para la moneda (entre 0 y 5000) 
-            double stockAleatorio = 5000 * random.nextDouble();
-			monedaDAO.crearStock(moneda.getNomenclatura(),stockAleatorio);
-		}
-        System.out.println("Stock generado y actualizado para las monedas.");
-	}
 	public Moneda obtenerMoneda(int id) {
 		return monedaDAO.obtenerMoneda(id);
 	}
 	public int obtenerId(String nomenclatura) {
 		return monedaDAO.obtenerId(nomenclatura);
 	}
-	/*
-	public void listarStocks(int ordenarPor) throws SQLException {
-		List<Moneda> monedas = monedaDAO.listarStocks();
-		//Si se ingreso el numero 2, ordeno los stocks por nomenclatura
-		if(ordenarPor == 2) {
-			Collections.sort(monedas,new ComparadorNomenclaturaMoneda());
-		}
-		for(Moneda moneda: monedas){
-			System.out.println(moneda.getNombre()+"("+moneda.getNomenclatura()+")"+" Stock:" +moneda.getStock());
-		}
-	}*/
+	public void cargarMonedasPrueba() {
+		monedaDAO.crearMonedasPrueba();
+	}
+	public void actualizarPrecios(List<Double>precios) {
+		monedaDAO.actualizarCotizaciones(precios);
+	}
 	//ACTIVOS
 	public boolean activoEnBD(int id) {
 		return(activoDAO.activoEnBD(id));
@@ -211,7 +196,7 @@ public class Operaciones {
 	    monedaDAO.actualizarStock(criptoEsperada.getNomenclatura(), -cantidadCripto);
 	    
 	    	// Guardar descripcion de la transaccion en BD
-	    String resumen = "Swap de " + cantidadCripto + " " + criptoEsperada.getNomenclatura() + " con " + monto + " " + criptoConvertir.getNomenclatura();
+	    String resumen = "Swap de " + monto + " " + criptoConvertir.getNomenclatura() + " a " + cantidadCripto + " " + criptoEsperada.getNomenclatura();
 	    LocalDateTime fechaHora = LocalDateTime.now();
 	    String fecha = "Fecha: "+ fechaHora;
 	    Transaccion transaccion = new Transaccion(resumen,fecha,idUsuario);
