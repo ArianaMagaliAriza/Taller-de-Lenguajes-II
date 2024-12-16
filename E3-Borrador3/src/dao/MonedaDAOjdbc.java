@@ -18,6 +18,52 @@ public class MonedaDAOjdbc implements MonedaDAO{
 		this.con=con;
 	}
 	
+	public void actualizarCotizaciones(List<Double>precios){
+        try{
+        	String queryActualizar = "UPDATE moneda SET valor_dolar=? WHERE nomenclatura='BTC'";
+        	PreparedStatement statement = con.prepareStatement(queryActualizar);
+           	statement.setDouble(1, precios.get(0));
+           	statement.executeUpdate();
+        	queryActualizar = "UPDATE moneda SET valor_dolar=? WHERE nomenclatura='ETH'";
+        	statement = con.prepareStatement(queryActualizar);
+           	statement.setDouble(1, precios.get(1));
+           	statement.executeUpdate();
+        	queryActualizar = "UPDATE moneda SET valor_dolar=? WHERE nomenclatura='USDC'";
+        	statement = con.prepareStatement(queryActualizar);
+           	statement.setDouble(1, precios.get(2));
+           	statement.executeUpdate();
+        	queryActualizar = "UPDATE moneda SET valor_dolar=? WHERE nomenclatura='USDT'";
+        	statement = con.prepareStatement(queryActualizar);
+           	statement.setDouble(1, precios.get(3));
+           	statement.executeUpdate();
+        	queryActualizar = "UPDATE moneda SET valor_dolar=? WHERE nomenclatura='DOGE'";
+        	statement = con.prepareStatement(queryActualizar);
+           	statement.setDouble(1, precios.get(4));
+           	statement.executeUpdate();
+       } catch (SQLException e) {
+    	   	System.out.print("Error de SQL:"+e.getMessage());
+       }
+	}
+	public void crearMonedasPrueba() {
+	    try (Statement statement = con.createStatement()) {
+	        // Verificar si ya hay monedas en la base de datos
+	        ResultSet rs = statement.executeQuery("SELECT COUNT(*) AS total FROM MONEDA");
+	        if (rs.next() && rs.getInt("total") > 0) {
+	            //Las monedas ya existen en la base de datos, no se insertarán nuevamente.
+	            return;
+	        }
+	        // Insertar las monedas si no existen
+	        String queryInsertar = "INSERT INTO MONEDA(id,tipo, nombre, nomenclatura, valor_dolar, volatilidad, stock, nombre_icono) "+
+	            "VALUES (1,'Cripto', 'Bitcoin', 'BTC', 0, 40.0, 34.0, 'iconBTC.png'),"+
+	            "(2,'Cripto', 'Ethereum', 'ETH', 0, 30.0, 500.0, 'iconETH.png'),"+
+	            "(3,'Fiat', 'Usdc', 'USDC', 0, 30.0, 1000.0, 'iconUSDC.png'),"+
+	            "(4,'Cripto', 'Tether', 'USDT', 0, 30.0, 1000.0, 'iconUSDT.png'),"+
+	            "(5,'Cripto', 'Dogecoin', 'DOGE', 0, 30.0, 5000.0, 'iconDOGE.png')";
+	        statement.executeUpdate(queryInsertar);
+       } catch (SQLException e) {
+    	   	System.out.print("Error de SQL(crearMonedas):"+e.getMessage());
+       }
+	}
 	//chequea si la moneda está en la base de datos
 		public boolean monedaEnBD(String nomenclatura) {
 			boolean existe=false;
@@ -83,23 +129,7 @@ public class MonedaDAOjdbc implements MonedaDAO{
         } catch (SQLException e) {
             System.out.print("Error de SQL:"+e.getMessage());
         }
-	}/*
-	public List<Moneda> listarStocks() {
-		List<Moneda> monedas = new LinkedList<>();
-		try {
-			String query = "SELECT * FROM moneda ORDER BY stock DESC";
-			Statement st = con.createStatement();
-			ResultSet res = st.executeQuery(query);
-			while(res.next()) {
-				Moneda moneda = new Moneda(res.getString("tipo"),res.getString("nombre"),res.getString("nomenclatura"),res.getDouble("valor_dolar"),res.getDouble("volatilidad"),res.getDouble("stock"));
-				monedas.add(moneda);
-			}
-			st.close();
-		} catch (SQLException e) {
-            System.out.print("Error de SQL:"+e.getMessage());
-        }
-		return monedas;
-	}*/
+	}
 	
 	public int obtenerId(String nomenclatura) {
 		int id = 0;
